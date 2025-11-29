@@ -1,0 +1,26 @@
+# Python
+backend/.venv/
+backend/__pycache__/
+backend/**/*.pyc
+
+# DB + uploads (bunlar repo'ya girmesin)
+backend/instance/
+backend/uploads/
+backend/db.sqlite3
+
+# React Native
+BitkiHastalikMobile/node_modules/
+
+# iOS
+BitkiHastalikMobile/ios/Pods/
+BitkiHastalikMobile/ios/build/
+BitkiHastalikMobile/ios/DerivedData/
+BitkiHastalikMobile/ios/**/*.xcuserdata
+BitkiHastalikMobile/ios/**/*.xcuserstate
+
+# Android
+BitkiHastalikMobile/android/.gradle/
+BitkiHastalikMobile/android/**/build/
+
+# macOS
+.DS_Store
