@@ -1,27 +1,27 @@
-# PlantDiseaseNew – Kurulum & Çalıştırma Dokümantasyonu
+# PlantDiseaseNew – Setup & Run Documentation
 
-Bu proje 2 parçadan oluşur:
+This project consists of 2 parts:
 
-* **Backend (Flask + TensorFlow)**: Model yükler, resim alır ve hastalık tahmini yapar, geçmişi SQLite’ta tutar.
-* **Mobile (React Native)**: Kullanıcı giriş/kayıt, galeriden/kameradan foto seçme, tahmin alma ve history görüntüleme.
+* **Backend (Flask + TensorFlow):** Loads the model, receives images, predicts plant diseases, and stores prediction history in SQLite.
+* **Mobile (React Native):** Handles user registration/login, selecting photos from gallery/camera, getting predictions, and viewing history.
 
-## 0) Gereksinimler
+## 0) Requirements
 
 ### Backend
 
-* Python 3.10+ (öneri: 3.10)
-* macOS/Linux/Windows fark etmez
+* Python 3.10+ (recommended: 3.10)
+* Works on macOS/Linux/Windows
 
 ### Mobile
 
-* Node.js (LTS önerilir)
-* React Native CLI ortamı
-* iOS için: Xcode + CocoaPods
-* Android için: Android Studio + emulator veya cihaz
+* Node.js (LTS recommended)
+* React Native CLI environment
+* For iOS: Xcode + CocoaPods
+* For Android: Android Studio + emulator or physical device
 
 ---
 
-# 1) Repo Klonlama
+# 1) Clone the Repository
 
 ```bash
 git clone https://github.com/pltthakan/PlantDiseaseNew.git
@@ -30,101 +30,102 @@ cd PlantDiseaseNew
 
 ---
 
-# 2) Backend Kurulum (Flask)
+# 2) Backend Setup (Flask)
 
-Backend klasörüne gir:
+Go into the backend folder:
 
 ```bash
 cd backend
 ```
 
-## 2.1) Sanal ortam (.venv) oluştur ve aktif et
+## 2.1) Create and activate a virtual environment (.venv)
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-> Terminalde başta `(.venv)` görmelisin.
+> You should see `(.venv)` at the beginning of your terminal prompt.
 
-## 2.2) Paketleri yükle
+## 2.2) Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## 2.3) Backend’i çalıştır
+## 2.3) Run the backend
 
 ```bash
 python app.py
 ```
 
-Beklenen çıktı örneği:
+Expected output example:
 
-* “Model yükleniyor…”
-* “Model yüklendi.”
-* Flask server 0.0.0.0:5000
+* “Loading model…”
+* “Model loaded.”
+* Flask server running on `0.0.0.0:5000`
 
-## 2.4) Backend test
+## 2.4) Test the backend
 
-Tarayıcı:
+In your browser:
 
 * `http://localhost:5000/`
-  Beklenen:
+
+Expected response:
 
 ```json
-{"message":"Plant disease API çalışıyor"}
+{"message":"Plant disease API is running"}
 ```
 
 ---
 
-# 3) Mobile Kurulum (React Native)
+# 3) Mobile Setup (React Native)
 
-Proje kökünden mobile dizinine gir:
+From the project root, go into the mobile directory:
 
 ```bash
 cd BitkiHastalikMobile
 ```
 
-## 3.1) Node paketleri
+## 3.1) Install Node packages
 
 ```bash
 npm install
 ```
 
-## 3.2) iOS Pod kurulumu (sadece iOS için)
+## 3.2) Install iOS pods (iOS only)
 
 ```bash
 npx pod-install ios
 ```
 
-## 3.3) Metro’yu başlat
+## 3.3) Start Metro
 
 ```bash
 npx react-native start
 ```
 
-> Metro genelde `http://localhost:8081` ile açılır.
+> Metro usually runs at `http://localhost:8081`.
 
 ---
 
-# 4) Uygulamayı Çalıştırma
+# 4) Running the Application
 
 ## 4.1) iOS Simulator
 
-Yeni terminal sekmesi:
+Open a new terminal tab:
 
 ```bash
 cd BitkiHastalikMobile
 npx react-native run-ios
 ```
 
-> Xcode açman gerekirse `.xcodeproj` değil **`.xcworkspace`** kullan:
+> If you need to open Xcode, use **`.xcworkspace`** instead of `.xcodeproj`:
 > `BitkiHastalikMobile/ios/BitkiHastalikMobile.xcworkspace`
 
-## 4.2) Android Emulator / Cihaz
+## 4.2) Android Emulator / Device
 
-Android emulator açıkken:
+While the Android emulator is running:
 
 ```bash
 cd BitkiHastalikMobile
@@ -133,9 +134,9 @@ npx react-native run-android
 
 ---
 
-# 5) Backend – Mobile Bağlantı (BASE_URL)
+# 5) Backend – Mobile Connection (BASE_URL)
 
-Mobile tarafında `BitkiHastalikMobile/src/api.ts` içinde BASE_URL kullanılır.
+On the mobile side, `BASE_URL` is used inside `BitkiHastalikMobile/src/api.ts`.
 
 ### iOS Simulator
 
@@ -145,40 +146,41 @@ Mobile tarafında `BitkiHastalikMobile/src/api.ts` içinde BASE_URL kullanılır
 
 * Backend: `http://10.0.2.2:5000`
 
-### Gerçek Telefon ile test (aynı Wi-Fi)
+### Testing with a Real Phone (same Wi-Fi)
 
-Mac IP’ni bul:
+Find your Mac’s IP address:
 
 ```bash
 ipconfig getifaddr en0
 ```
 
-Örn `192.168.1.50` geldiyse:
+For example, if it returns `192.168.1.50`:
 
 * BASE_URL: `http://192.168.1.50:5000`
 
-> Backend’in çalışırken `app.run(host="0.0.0.0", port=5000)` olması zaten cihazdan erişime uygundur.
+> The backend should already be accessible from devices if it runs with:
+> `app.run(host="0.0.0.0", port=5000)`
 
 ---
 
-# 6) Uygulama Akışı
+# 6) Application Flow
 
-1. **Register** ile kullanıcı oluştur
-2. **Login** ile giriş yap
-3. Galeriden foto seç veya kameradan çek
-4. **Tahmin Et** -> backend `/api/predict`
-5. **History** ekranında geçmiş tahminler listelenir (ve resim gösterilir)
+1. Create a user with **Register**
+2. Log in with **Login**
+3. Select a photo from the gallery or take one with the camera
+4. Tap **Predict** → backend `/api/predict`
+5. Previous predictions are listed on the **History** screen (with image if available)
 
 ---
 
-# 7) API Endpointleri
+# 7) API Endpoints
 
-Backend base: `http://localhost:5000`
+Backend base URL: `http://localhost:5000`
 
 ### Register
 
 `POST /api/register`
-Body (JSON):
+Request body (JSON):
 
 ```json
 {"email":"test@test.com","password":"123456"}
@@ -187,7 +189,7 @@ Body (JSON):
 ### Login
 
 `POST /api/login`
-Body (JSON):
+Request body (JSON):
 
 ```json
 {"email":"test@test.com","password":"123456"}
@@ -195,60 +197,66 @@ Body (JSON):
 
 ### Predict
 
-`POST /api/predict` (multipart/form-data)
+`POST /api/predict` (`multipart/form-data`)
 
 * `user_id`: (string/int)
 * `image`: file
 
 Response:
 
-* `class_name`, `confidence`, `created_at`, `prediction_id`
+* `class_name`
+* `confidence`
+* `created_at`
+* `prediction_id`
 
 ### History
 
 `GET /api/history?user_id=1`
+
 Response list:
 
-* `class_name`, `confidence`, `created_at`, (image_url varsa o da)
+* `class_name`
+* `confidence`
+* `created_at`
+* `image_url` (if available)
 
 ---
 
-# 8) Sık Hatalar ve Çözümler
+# 8) Common Errors & Solutions
 
 ## 8.1) Metro: `EADDRINUSE 8081`
 
-8081 dolu demektir:
+This means port 8081 is already in use:
 
 ```bash
 kill -9 $(lsof -t -i :8081)
 npx react-native start --reset-cache
 ```
 
-## 8.2) iOS Pod hatası
+## 8.2) iOS Pod error
 
 ```bash
 cd BitkiHastalikMobile
 npx pod-install ios
 ```
 
-Olmazsa:
+If that does not work:
 
 ```bash
 brew install cocoapods
 cd ios && pod install
 ```
 
-## 8.3) Backend çalışmıyor / paket bulunamadı
+## 8.3) Backend not running / package not found
 
-`.venv` aktif mi kontrol et:
+Make sure `.venv` is activated:
 
 ```bash
 source backend/.venv/bin/activate
 ```
 
-## 8.4) Gerçek telefonda backend’e bağlanmıyor
+## 8.4) Cannot connect to backend on a real phone
 
-* Telefon ve Mac aynı Wi-Fi’da mı?
-* BASE_URL Mac IP’ye ayarlı mı?
-* Backend açık mı?
-
+* Are the phone and Mac connected to the same Wi-Fi?
+* Is `BASE_URL` set to the Mac’s IP address?
+* Is the backend running?
